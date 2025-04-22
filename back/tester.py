@@ -29,7 +29,6 @@ print(
 
 print(requests.delete("http://localhost:8000/forms/1").json())
 
-# print(requests.put("http://localhost:8000/forms/0?costs=0.0").json())
 
 print(
     requests.put(
