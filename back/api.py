@@ -2,7 +2,15 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from dotenv import load_dotenv
+from openai import OpenAI
+
+
+load_dotenv()
+client = OpenAI()
+
 app = FastAPI()
+
 
 origins = [
     "http://localhost:3000",
@@ -17,6 +25,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+# response_model=list[schemas.News]
 
 
 @app.get("/", tags=["root"])
@@ -35,7 +45,14 @@ forms_dict = {
     0: Form(company='deloitte', revenue=10, costs=5, id=0)
 }
 
-# response_model=list[schemas.News]
+
+def call_openai(form: Form) -> str:
+    response = client.responses.create(
+    model="gpt-4.1",
+    input=f'Compute the Corcporate Income Tax (CIT) for a Greek company with revenue {form.revenue} million euros and costs {form.costs} million euros.'
+)
+    print(response.output_text)
+    return(response.output_text)
 
 
 @app.get('/')
@@ -56,19 +73,23 @@ async def query_form_by_id(form_id: int) -> Form:
 
 
 @app.post("/forms/add")
-async def add_form(form: Form) -> dict[str, Form]:
+async def add_form(form: Form) -> dict[str, Form | str]:
     if int(form.id) in forms_dict:
         raise HTTPException(status_code=400, detail=f"Company with {form.id=} already exists.")
     forms_dict[form.id] = form
-    return {"added": form}
+    text = call_openai(form) # test call
+    # return {"added": form}
+    return {"added": form, "text": text}
 
 
 @app.put("/forms/{form_id}")
-async def update_form(form: Form) -> dict[str, Form]:
+async def update_form(form: Form) -> dict[str, Form | str]:
     if form.id not in forms_dict:
             raise HTTPException(status_code=404, detail=f"Item with {form.id=} does not exist.")
     forms_dict[form.id] = form
-    return {"updated": form}
+    text = call_openai(form) # test call
+    # return {"updated":: form}
+    return {"updated": form, "text": text}
 
 """
 @app.put("/forms/{form_id}")

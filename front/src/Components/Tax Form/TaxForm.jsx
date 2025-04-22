@@ -25,10 +25,15 @@ const TaxForm = () => {
         costs: inputs.costs,
         id: count-1,
       }
-      axios.put('http://localhost:8000/forms/'+(count-1), newForm);
+      try {
+        const response = await axios.put('http://localhost:8000/forms/'+(count-1), newForm);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    function postForm(event) {
+    async function postForm(event) {
       event.preventDefault();
       increment();
       console.log(inputs);
@@ -38,7 +43,12 @@ const TaxForm = () => {
         costs: inputs.costs,
         id: count,
       }
-      axios.post('http://localhost:8000/forms/add', newForm);
+      try {
+        const response = await axios.post('http://localhost:8000/forms/add', newForm);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     const handleClick = () => {
@@ -102,6 +112,10 @@ const TaxForm = () => {
           </div>
           <noscript className="comment">axios post tester button</noscript>
           <div className='button' onClick={postForm}>Submit
+          </div>
+        </div>
+        <div className='test-container'>
+          <div className='response'>
           </div>
         </div>
     </div>

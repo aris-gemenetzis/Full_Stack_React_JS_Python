@@ -69,3 +69,15 @@ label {
     border-radius: 10px;
     cursor: pointer;
 }
+
+.text-container {
+    display: flex;
+    gap: 30px;
+    margin: 10px auto;
+}
+
+.response {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

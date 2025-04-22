@@ -1,4 +1,3 @@
-import requests
 from fastapi import FastAPI
 import uvicorn
 import json
