@@ -88,34 +88,8 @@ async def update_form(form: Form) -> dict[str, Form | str]:
             raise HTTPException(status_code=404, detail=f"Item with {form.id=} does not exist.")
     forms_dict[form.id] = form
     text = call_openai(form) # test call
-    # return {"updated":: form}
+    # return {"updated": form}
     return {"updated": form, "text": text}
-
-"""
-@app.put("/forms/{form_id}")
-async def update_form(
-    form_id: int | None = None,
-    company: str | None = None,
-    revenue: float | None = None,
-    costs: float | None = None,
-    ) -> dict[str, Form]:
-        if form_id not in forms_dict:
-            HTTPException(status_code=404, detail=f"Item with {form_id=} does not exist.")
-        if all(info is None for info in (company, costs, revenue)):
-            raise HTTPException(
-                status_code=400, detail="No parameters provided for update."
-            )
-
-        form = forms_dict[form_id]
-        if company is not None:
-            form.company= company
-        if revenue is not None:
-            form.revenue = revenue
-        if costs is not None:
-            form.costs = costs
-
-        return {"updated": forms_dict[form_id]}
-"""
 
 
 @app.delete("/forms/{form_id}")
