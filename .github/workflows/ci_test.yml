@@ -15,6 +15,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm ci --workspace front
+          cache-dependency-path: 'test/front/package-lock.json'
+      - run: npm ci
       - run: npm test
       - run: npm run build
