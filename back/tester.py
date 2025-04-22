@@ -3,7 +3,6 @@ import requests
 
 print(requests.get('http://localhost:8000/forms/0').json())
 
-
 print(
     requests.post(
         "http://localhost:8000/forms/add",
@@ -26,9 +25,7 @@ print(
             }
     ).json())
 
-
 print(requests.delete("http://localhost:8000/forms/1").json())
-
 
 print(
     requests.put(
