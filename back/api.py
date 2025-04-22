@@ -1,0 +1,108 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+
+@app.get("/", tags=["root"])
+async def read_root() -> dict:
+    return {"message": "Welcome to your tax form."}
+
+
+class Form(BaseModel):
+    company: str
+    revenue: float
+    costs: float
+    id: int
+
+
+forms_dict = {
+    0: Form(company='deloitte', revenue=10, costs=5, id=0)
+}
+
+# response_model=list[schemas.News]
+
+
+@app.get('/')
+async def main():
+    return {'msg': 'Welcome to your tax form.'}
+
+
+@app.get('/forms')
+async def get_forms() -> dict:
+    return {"data": forms_dict}
+
+
+@app.get('/forms/{form_id}')
+async def query_form_by_id(form_id: int) -> Form:
+    if form_id not in forms_dict:
+        raise HTTPException(status_code=404, detail='Item not found')
+    return forms_dict[form_id]
+
+
+@app.post("/forms/add")
+async def add_form(form: Form) -> dict[str, Form]:
+    if int(form.id) in forms_dict:
+        raise HTTPException(status_code=400, detail=f"Company with {form.id=} already exists.")
+    forms_dict[form.id] = form
+    return {"added": form}
+
+
+@app.put("/forms/{form_id}")
+async def update_form(form: Form) -> dict[str, Form]:
+    if form.id not in forms_dict:
+            raise HTTPException(status_code=404, detail=f"Item with {form.id=} does not exist.")
+    forms_dict[form.id] = form
+    return {"updated": form}
+
+"""
+@app.put("/forms/{form_id}")
+async def update_form(
+    form_id: int | None = None,
+    company: str | None = None,
+    revenue: float | None = None,
+    costs: float | None = None,
+    ) -> dict[str, Form]:
+        if form_id not in forms_dict:
+            HTTPException(status_code=404, detail=f"Item with {form_id=} does not exist.")
+        if all(info is None for info in (company, costs, revenue)):
+            raise HTTPException(
+                status_code=400, detail="No parameters provided for update."
+            )
+
+        form = forms_dict[form_id]
+        if company is not None:
+            form.company= company
+        if revenue is not None:
+            form.revenue = revenue
+        if costs is not None:
+            form.costs = costs
+
+        return {"updated": forms_dict[form_id]}
+"""
+
+
+@app.delete("/forms/{form_id}")
+async def delete_form(form_id: int) -> dict[str, Form]:
+    if form_id not in forms_dict:
+        raise HTTPException(
+            status_code=404, detail=f"Form with {form_id=} does not exist."
+        )
+
+    form = forms_dict.pop(form_id)
+    return {"deleted": form}
