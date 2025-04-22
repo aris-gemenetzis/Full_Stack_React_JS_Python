@@ -26,8 +26,6 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-# response_model=list[schemas.News]
-
 
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
