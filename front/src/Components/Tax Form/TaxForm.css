@@ -78,6 +78,7 @@ label {
 
 .response {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 400px;
+    height: 200px;
+    overflow: auto;
 }

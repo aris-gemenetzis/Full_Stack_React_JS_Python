@@ -2,10 +2,18 @@ import React from 'react'
 import { useState } from "react";
 import './TaxForm.css'
 import axios from 'axios'
+import MarkdownPreview from './MarkdownPreview.js';
+
 
 const TaxForm = () => {
 
   const [inputs, setInputs] = useState({});
+
+  const [response, setResponse] = useState(`**This is a Simple Tax Form**`);
+
+  function getResponse(text) {
+    setResponse(text)
+  }
 
     async function getData() {
       try {
@@ -27,7 +35,9 @@ const TaxForm = () => {
       }
       try {
         const response = await axios.put('http://localhost:8000/forms/'+(count-1), newForm);
-        console.log(response.data);
+        console.log(response.data.added);
+        console.log(response.data.text);
+        getResponse(response.data.text)
       } catch (error) {
         console.error(error);
       }
@@ -45,7 +55,9 @@ const TaxForm = () => {
       }
       try {
         const response = await axios.post('http://localhost:8000/forms/add', newForm);
-        console.log(response.data);
+        console.log(response.data.added);
+        console.log(response.data.text);
+        getResponse(response.data.text)
       } catch (error) {
         console.error(error);
       }
@@ -114,8 +126,9 @@ const TaxForm = () => {
           <div className='button' onClick={postForm}>Submit
           </div>
         </div>
-        <div className='test-container'>
+        <div className='text-container'>
           <div className='response'>
+          <MarkdownPreview markdown={response} />
           </div>
         </div>
     </div>
