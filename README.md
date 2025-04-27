@@ -1,4 +1,4 @@
-# Full Stack APP
+# Full Stack App
 Full Stack Mock App in React JS & Python FastAPI with OpenAI Integration
 
 ## Installation
