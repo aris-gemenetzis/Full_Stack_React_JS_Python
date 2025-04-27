@@ -1,4 +1,4 @@
-# Full Stack Dev
+# Full Stack APP
 Full Stack Mock App in React JS & Python FastAPI with OpenAI Integration
 
 ## Installation
@@ -42,6 +42,11 @@ Run Backend first using `python main.py` then Frontend with `npm start`. Enter a
 - `main.py`: used to call `api.py`
 - `api.py`: contains Backend code, including OpenAI call
 - `tester.py`: test code containing a variety of calls to server
+
+## OpenAI Integration
+A generative AI model is called from the Backend in `api.py` using an OpenAI API key. The key itself is stored in a `.env` file and parsed to the program through a `load_dotenv()` call. For security reasons, an exception is also added to the Backend `.gitignore` file to exclude the `.env` file on push.
+
+The output of the OpenAI model is forwarded to the client as a server response for each **POST** or **PUT** call. The answer is then displayed on screen using the designated Markdown Component outlined in `MarkdownPreview.js`.
 
 ## Docker Instructions
 Build and deploy Docker images using the corresponding Dockerfiles.
