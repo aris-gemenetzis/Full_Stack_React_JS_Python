@@ -75,8 +75,7 @@ async def add_form(form: Form) -> dict[str, Form | str]:
     if int(form.id) in forms_dict:
         raise HTTPException(status_code=400, detail=f"Company with {form.id=} already exists.")
     forms_dict[form.id] = form
-    text = call_openai(form) # test call
-    # return {"added": form}
+    text = call_openai(form)
     return {"added": form, "text": text}
 
 
@@ -85,8 +84,7 @@ async def update_form(form: Form) -> dict[str, Form | str]:
     if form.id not in forms_dict:
             raise HTTPException(status_code=404, detail=f"Item with {form.id=} does not exist.")
     forms_dict[form.id] = form
-    text = call_openai(form) # test call
-    # return {"updated": form}
+    text = call_openai(form)
     return {"updated": form, "text": text}
 
 
