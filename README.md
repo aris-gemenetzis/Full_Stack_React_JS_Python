@@ -3,7 +3,7 @@ Full Stack Mock App in React JS & Python FastAPI with OpenAI Integration
 
 ## Installation
 ### Frontend
-- Install [React JS] (https://react.dev/)
+- Install [React JS](https://react.dev/)
 - `cd front`
 - `npm install`
 - `npm start`
@@ -15,7 +15,7 @@ docker build -t <frontend> .
 docker run -p 3000:3000 <frontend>
 ```
 ### Backend
-- Install [Python] (https://www.python.org/downloads/)
+- Install [Python](https://www.python.org/downloads/)
 - `cd back`
 - `pip install -r requirements.txt`
 - `python main.py`
